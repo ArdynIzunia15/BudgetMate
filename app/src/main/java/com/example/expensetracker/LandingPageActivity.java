@@ -5,6 +5,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -28,6 +29,12 @@ public class LandingPageActivity extends AppCompatActivity {
         // Init Components
         MaterialButton btnMasuk = findViewById(R.id.btnMasuk);
         MaterialButton btnDaftar = findViewById(R.id.btnDaftar);
+
+        SharedPreferences sharedPref = getSharedPreferences("login_info", MODE_PRIVATE);
+        if (sharedPref.getBoolean("status", false)){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+        }
 
         btnMasuk.setOnClickListener(new View.OnClickListener() {
             @Override
