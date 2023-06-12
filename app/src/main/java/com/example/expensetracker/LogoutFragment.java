@@ -22,7 +22,7 @@ public class LogoutFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_logout, container, false);
         containerLogout = view.findViewById(R.id.containerLogout);
 
-        sharedPref = this.getActivity().getSharedPreferences("login_info", Context.MODE_PRIVATE);
+        sharedPref = this.getActivity().getSharedPreferences("activeUserAccount", Context.MODE_PRIVATE);
 
         containerLogout.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -16,6 +17,17 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.google.android.material.button.MaterialButton;
 
 public class LandingPageActivity extends AppCompatActivity {
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            moveTaskToBack(true);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(1);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +42,10 @@ public class LandingPageActivity extends AppCompatActivity {
         MaterialButton btnMasuk = findViewById(R.id.btnMasuk);
         MaterialButton btnDaftar = findViewById(R.id.btnDaftar);
 
-        SharedPreferences sharedPref = getSharedPreferences("login_info", MODE_PRIVATE);
-        if (sharedPref.getBoolean("status", false)){
+        // Read Shared Preferences
+        SharedPreferences sharedPreferences = getSharedPreferences("activeUserAccount", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("userId", 0);
+        if(userId != 0){
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         }

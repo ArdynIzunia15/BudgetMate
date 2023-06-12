@@ -41,12 +41,24 @@ public class LoginActivity extends AppCompatActivity {
         layoutPassword = findViewById(R.id.layoutPassword);
         sharedPref = getSharedPreferences("login_info", MODE_PRIVATE);
 
-        if (sharedPref.getBoolean("status", false)){
+        // Read Shared Preferences
+        SharedPreferences sharedPreferences = getSharedPreferences("activeUserAccount", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("userId", 0);
+        String username = sharedPreferences.getString("username", "");
+        String password = sharedPreferences.getString("password", "");
+
+        if(userId != 0){
             Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-            intent.putExtra("username", sharedPref.getString("username", null));
             startActivity(intent);
             finish();
         }
+
+        //if (sharedPref.getBoolean("status", false)){
+            //Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+            //intent.putExtra("username", sharedPref.getString("username", null));
+            //startActivity(intent);
+            //finish();
+        //}
 
         btnDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,15 +81,14 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Username atau password salah", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    // add sharedPreferences
-                    @SuppressLint("CommitPrefEdits")
-                    SharedPreferences.Editor editor = sharedPref.edit();
+                    // Save to sharedPreferences
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("username", username);
-                    editor.putBoolean("status", true);
+                    editor.putInt("userId", user.getId());
+                    editor.putString("password", password);
                     editor.apply();
 
                     Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-                    intent.putExtra("username", user.getUsername());
                     startActivity(intent);
                     finish();
                 }
