@@ -1,5 +1,7 @@
 package com.example.expensetracker;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -21,9 +23,16 @@ public class LogoutFragment extends Fragment {
         containerLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                logout();
                 getActivity().finish();
             }
         });
         return view;
+    }
+    private void logout(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("activeUserAccount", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
     }
 }

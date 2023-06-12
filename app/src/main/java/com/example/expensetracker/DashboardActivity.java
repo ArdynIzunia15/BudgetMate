@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -18,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -50,7 +52,9 @@ public class DashboardActivity extends AppCompatActivity {
     {
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
-            finish();
+            moveTaskToBack(true);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(1);
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -97,9 +101,14 @@ public class DashboardActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this,R.color.primary));
 
-        // Get userId and username
-        Bundle extras = getIntent().getExtras();
-        if(extras != null){
+        // Read Shared Preferences
+        SharedPreferences sharedPreferences = getSharedPreferences("activeUserAccount", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("userId", 0);
+        String username = sharedPreferences.getString("username", "");
+        String password = sharedPreferences.getString("password", "");
+
+        // If active account present
+        if(userId != 0 && !username.equals("") && !password.equals("")){
             // Init Components
             databaseHandler = new DatabaseHandler(this);
             btnAccount = findViewById(R.id.btnAccount);
@@ -116,13 +125,10 @@ public class DashboardActivity extends AppCompatActivity {
 
             // Init Operations
             // Inflate Fragment
-
-            String username = extras.getString("username");
             btnAccount.setText("Halo, " + username + "!");
             // Retrieve user data
             User user = new User();
             user = databaseHandler.getUser(username);
-            int userId = user.getId();
             int userBalance = user.getBalance();
 
             btnAccount.setOnClickListener(new View.OnClickListener() {
@@ -199,6 +205,10 @@ public class DashboardActivity extends AppCompatActivity {
             barChart.animateXY(2000, 2000);
             barChart.setData(barData);
             barChart.invalidate();
+        }
+        else{
+            Toast.makeText(this, "Login lagi dong", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
