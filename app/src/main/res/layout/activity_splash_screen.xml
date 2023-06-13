@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashScreenActivity">
+    tools:context=".SplashScreenActivity"
+    android:background="@color/nonPureWhite">
     <ImageView
         android:id="@+id/logoBudgetMate"
         android:src="@drawable/logo_splashscreen_budgetmate_removebg"

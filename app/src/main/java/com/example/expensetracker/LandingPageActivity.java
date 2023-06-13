@@ -31,12 +31,13 @@ public class LandingPageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme_LightStatusBar);
         setContentView(R.layout.activity_landingpage);
         // Change Notification Bar Color
         Window window = this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.secondary));
+        window.setStatusBarColor(ContextCompat.getColor(this,R.color.nonPureWhite));
 
         // Init Components
         MaterialButton btnMasuk = findViewById(R.id.btnMasuk);
